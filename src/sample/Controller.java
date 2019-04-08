@@ -5,7 +5,11 @@ import java.util.Random;
 
 public class Controller {
     public BigInteger generatePrivateKey(BigInteger q){
-        return getNextRandValue(q);
+        return getNextRandValue(q); // s < q
+    }
+
+    public BigInteger generatePublicKey(BigInteger a, BigInteger s, BigInteger p){
+        return a.modPow(s.negate(), p); // v = a^(-s) mod p
     }
 
     private BigInteger getNextRandValue(BigInteger val){
