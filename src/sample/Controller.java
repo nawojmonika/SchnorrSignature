@@ -1,15 +1,15 @@
 package sample;
 
 import java.math.BigInteger;
-import java.util.Random;
+import java.util.*;
 
 public class Controller {
-    public BigInteger generatePrivateKey(BigInteger q){
-        return getNextRandValue(q); // s < q
+    public BigInteger generatePrivateKey(BigInteger factorOfPrime){
+        return getNextRandValue(factorOfPrime); // s < q
     }
 
-    public BigInteger generatePublicKey(BigInteger a, BigInteger s, BigInteger p){
-        return a.modPow(s.negate(), p); // v = a^(-s) mod p
+    public BigInteger generatePublicKey(BigInteger alpha, BigInteger secreyKey, BigInteger prime){
+        return alpha.modPow(secreyKey.negate(), prime); // v = a^(-s) mod p
     }
 
     private BigInteger getNextRandValue(BigInteger val){
@@ -20,4 +20,24 @@ public class Controller {
         }
         return result;
     }
+
+    private BigInteger getFactorOfPrime(){
+        BigInteger factorOfPrime = new BigInteger("2");
+        // q = 2^256 - 2^168 + 1
+        factorOfPrime = factorOfPrime.pow(256);	// q = 2^256
+        factorOfPrime = factorOfPrime.subtract(new BigInteger("2").pow(168));	// q = 2^256 - 2^168
+        factorOfPrime = factorOfPrime.add(new BigInteger("1"));	// q = 2^256 - 2^168 + 1
+        return factorOfPrime;
+    }
+
+    public HashMap<Utils.Globals, BigInteger> getGlobals(){
+        HashMap<Utils.Globals, BigInteger> globals = new HashMap();
+        globals.put(Utils.Globals.factorOfPrime, this.getFactorOfPrime());
+        return globals;
+    }
+
+    public BigInteger[] sign(String password, HashMap<Utils.Globals, BigInteger> globals){
+        BigInteger r = new BigInteger(password.getBytes()).mod(globals.get(Utils.Globals.factorOfPrime));
+    }
+
 }
