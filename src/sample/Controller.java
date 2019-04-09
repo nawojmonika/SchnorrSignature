@@ -4,12 +4,16 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class Controller {
-    public BigInteger getSecretKey(BigInteger factor){
-        return nextRandomBigInteger(factor); // 0 < s < q
+    public BigInteger factor;
+    public BigInteger alpha;
+    public BigInteger prime;
+
+    public BigInteger getSecretKey(){
+        return nextRandomBigInteger(this.factor); // 0 < s < q
     }
 
-    public BigInteger getPublicKey(BigInteger alpha, BigInteger secretKey, BigInteger prime){
-        return alpha.modPow(secretKey.negate(), prime); // a ^-s mod p
+    public BigInteger getPublicKey(BigInteger secretKey){
+        return this.alpha.modPow(secretKey.negate(), this.prime); // a ^-s mod p
     }
 
     private BigInteger nextRandomBigInteger(BigInteger n) {
@@ -19,5 +23,11 @@ public class Controller {
             result = new BigInteger(n.bitLength(), rand);
         }
         return result;
+    }
+
+    public void sign(String message){
+        BigInteger random = this.nextRandomBigInteger(this.factor); // r < q
+        BigInteger X = this.alpha.modPow(random, this.prime);
+
     }
 }
