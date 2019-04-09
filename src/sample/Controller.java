@@ -4,11 +4,20 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class Controller {
-    public BigInteger getPrime(BigInteger factor) {
-        return factor.multiply(new BigInteger("2")).add(new BigInteger("1")); //p = 2q + 1
+    public BigInteger getSecretKey(BigInteger factor){
+        return nextRandomBigInteger(factor); // 0 < s < q
     }
 
-    public BigInteger getFactor() {
-        return new BigInteger("0"); //To DO: get from user or generate??    //q
+    public BigInteger getPublicKey(BigInteger alpha, BigInteger secretKey, BigInteger prime){
+        return alpha.modPow(secretKey.negate(), prime); // a ^-s mod p
+    }
+
+    private BigInteger nextRandomBigInteger(BigInteger n) {
+        Random rand = new Random();
+        BigInteger result = new BigInteger(n.bitLength(), rand);
+        while (result.compareTo(n) >= 0) {
+            result = new BigInteger(n.bitLength(), rand);
+        }
+        return result;
     }
 }
