@@ -3,7 +3,7 @@ package sample;
 import java.math.BigInteger;
 import java.util.*;
 
-public class ShnnorrAlgorithm {
+public class SchnnorrAlgorithm {
     // Public variables
     public BigInteger p; // 512-bit prime
     public BigInteger q; // 140=bit prime & factor of p -1
@@ -19,7 +19,7 @@ public class ShnnorrAlgorithm {
 
     private void generatePublicVariables(){
         this.p = this.getPrime(512);
-        this.q = this.getFactorOfPrime();
+        this.q = this.getFactorOfPrime(this.p, 140);
         this.a = this.getValueOfa();
     }
 
@@ -28,12 +28,12 @@ public class ShnnorrAlgorithm {
         return BigInteger.probablePrime(bitLength, rand);
     }
 
-    private BigInteger getFactorOfPrime(){
+    public BigInteger getFactorOfPrime(BigInteger p, int bitLength){
         BigInteger zero = new BigInteger("0");
-        BigInteger q =  this.getPrime(140);
-        BigInteger prime = this.p.add(new BigInteger("-1"));
-        while (prime.remainder(q) != zero){
-            q = this.getPrime(140);
+        BigInteger q =  this.getPrime(bitLength);
+        BigInteger prime = p.add(new BigInteger("-1"));
+        while (!prime.remainder(q).equals(zero)){
+            q = this.getPrime(bitLength);
         }
         return  q;
     }
