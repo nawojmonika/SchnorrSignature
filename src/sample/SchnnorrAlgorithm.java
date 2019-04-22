@@ -4,6 +4,10 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class SchnnorrAlgorithm {
+    // Constraints
+    private final BigInteger one = new BigInteger("1");
+
+
     // Public variables
     public BigInteger p; // 512-bit prime
     public BigInteger q; // 140=bit prime & factor of p -1
@@ -20,7 +24,10 @@ public class SchnnorrAlgorithm {
     private void generatePublicVariables(){
         this.p = this.getPrime(512);
         this.q = this.getFactorOfPrime(this.p, 140);
-        this.a = this.getValueOfa();
+        this.a = this.getValueOfa(this.q, this.p);
+        if(a.equals(one)){
+            this.generatePublicVariables();
+        }
     }
 
     private BigInteger getPrime(int bitLength){
@@ -38,10 +45,9 @@ public class SchnnorrAlgorithm {
         return  q;
     }
 
-    private BigInteger getValueOfa(){
-        BigInteger one = new BigInteger("1");
-        BigInteger power = one.divide(this.q);
-        return one.modPow(power,this.p);
+    public BigInteger getValueOfa(BigInteger q, BigInteger p){
+        int power = this.one.divide(q).intValue();
+        return this.one.mod(p).pow(power);
     }
 
     public void generateKeys(){
