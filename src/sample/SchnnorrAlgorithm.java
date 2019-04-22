@@ -42,8 +42,8 @@ public class SchnnorrAlgorithm {
     }
 
     public BigInteger getValueOfa(BigInteger q, BigInteger p){
-        int power = BigInteger.ONE.divide(q).intValue();
-        return BigInteger.ONE.mod(p).pow(power);
+        BigInteger e0 = BigInteger.valueOf(2);
+        return e0.modPow((p.subtract(BigInteger.ONE).divide(q)), p);
     }
 
     public void generateKeys(){

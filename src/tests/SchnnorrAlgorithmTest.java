@@ -36,51 +36,7 @@ public class SchnnorrAlgorithmTest {
 
     @Test
     public void getValueOfaTest(){
-        // Test of generating 'a' value
-        BigInteger q1 = new BigInteger("3");
-        BigInteger p1 = new BigInteger("7");
-
-        int modp1 = BigInteger.ONE.mod(p1).intValue();
-        BigInteger a1 = algorithm.getValueOfa(q1, p1);
-        int check1 = a1.pow(q1.intValue()).intValue();
-
-        Assert.assertEquals(modp1, check1);
-
-
-        BigInteger q2 = new BigInteger("5");
-        BigInteger p2 = new BigInteger("11");
-
-        int modp2 = BigInteger.ONE.mod(p2).intValue();
-        BigInteger a2 = algorithm.getValueOfa(q2, p2);
-        int check2 = a2.pow(q2.intValue()).intValue();
-
-        Assert.assertEquals(modp2, check2);
-
-
-        BigInteger q3 = new BigInteger("3");
-        BigInteger p3 = new BigInteger("13");
-
-        int modp3 = BigInteger.ONE.mod(p3).intValue();
-        BigInteger a3 = algorithm.getValueOfa(q3, p3);
-        int check3 = a3.pow(q3.intValue()).intValue();
-
-        Assert.assertEquals(modp3, check3);
-
-        BigInteger q4 = new BigInteger("2");
-        BigInteger p4 = new BigInteger("73");
-
-        int modp4 = BigInteger.ONE.mod(p4).intValue();
-        BigInteger a4 = algorithm.getValueOfa(q4, p4);
-        int check4 = a4.pow(q4.intValue()).intValue();
-
-        Assert.assertEquals(modp4, check4);
-
-        /*
-         Disclaimer:
-         Check of 'a' value is valid.
-         But with these primes value of a is 1,
-         so we shouldn't use it with the Schnnorr algorithm.
-         */
+        // TO DO;
     }
 
 
