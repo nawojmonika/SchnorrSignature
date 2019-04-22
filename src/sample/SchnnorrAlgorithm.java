@@ -33,11 +33,11 @@ public class SchnnorrAlgorithm {
 
     private void generatePublicVariables(){
         this.q = this.getRandomPrime(140);
-        this.p = this.getPrimeOfFactor(this.q,300);
+        this.p = this.getPrimeOfFactor(this.q, 373);
         this.a = this.getValueOfa(this.q, this.p);
-//        if(this.a.equals(BigInteger.ONE)){
-//            this.generatePublicVariables();
-//        }
+        if(this.a.equals(BigInteger.ONE)){
+            this.generatePublicVariables();
+        }
     }
 
     private BigInteger getRandomPrime(int bitLength){
@@ -48,9 +48,10 @@ public class SchnnorrAlgorithm {
     public BigInteger getPrimeOfFactor(BigInteger q, int bitLength){
         BigInteger p;
         do{
-            BigInteger k = this.getRandomPrime(bitLength);
+            Random r = new Random();
+            BigInteger k = new BigInteger(bitLength,  r);
             p = (q.multiply(k)).add(BigInteger.ONE);
-        }while (p.isProbablePrime(999));
+        }while (!p.isProbablePrime(9999) && p.bitLength() != 512);
         return p;
     }
 
@@ -61,8 +62,12 @@ public class SchnnorrAlgorithm {
     }
 
     public void generateKeys(){
-        this.s = this.getRandomLessThan(100, this.q);
+        this.s = getPrivateKey(this.q);
         this.v = getPublicKey(this.a, this.s, this.p);
+    }
+
+    public BigInteger getPrivateKey(BigInteger q){
+        return this.getRandomLessThan(q.bitLength(), q);
     }
 
     public BigInteger getPublicKey(BigInteger a, BigInteger s, BigInteger p){
@@ -70,11 +75,12 @@ public class SchnnorrAlgorithm {
     }
 
     public BigInteger getRandomLessThan(int bitLength, BigInteger less){
-        Random rand = new Random();
-        BigInteger random = new BigInteger(bitLength, 1, rand);
-        if(random.compareTo(less) != -1){
-            this.getRandomLessThan(bitLength,  less);
-        }
+        BigInteger random;
+        do{
+            Random rand = new Random();
+            random = new BigInteger(bitLength,  rand);
+        }while (random.compareTo(less) != -1);
+
         return  random;
     }
 
