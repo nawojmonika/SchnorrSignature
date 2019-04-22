@@ -39,26 +39,27 @@ public class SchnnorrAlgorithmTest {
         //TO DO
     }
 
-    @Test
-    public void getPrivateKeyTest(){
-        int length = 2;
-
-        BigInteger q1 = BigInteger.valueOf(7);
-        BigInteger privateKey1 = algorithm.getPrivateKey(length, q1);
-        Assert.assertTrue(privateKey1.compareTo(q1) == -1);
-
-        BigInteger q2 = BigInteger.valueOf(11);
-        BigInteger privateKey2 = algorithm.getPrivateKey(length, q2);
-        Assert.assertTrue(privateKey2.compareTo(q2) == -1);
-
-        BigInteger q3 = BigInteger.valueOf(13);
-        BigInteger privateKey3 = algorithm.getPrivateKey(length, q3);
-        Assert.assertTrue(privateKey3.compareTo(q3) == -1);
-    }
 
     @Test
     public void getPublicKeyTest(){
         // TO DO
+    }
+
+    @Test
+    public void getRandomLessThanTest(){
+        int length = 2;
+
+        BigInteger lessThan1 = BigInteger.valueOf(60);
+        BigInteger privateKey1 = algorithm.getRandomLessThan(length, lessThan1);
+        Assert.assertTrue(privateKey1.compareTo(lessThan1) == -1);
+
+        BigInteger lessThan2 = BigInteger.valueOf(111);
+        BigInteger privateKey2 = algorithm.getRandomLessThan(length, lessThan2);
+        Assert.assertTrue(privateKey2.compareTo(lessThan2) == -1);
+
+        BigInteger lessThan3 = BigInteger.valueOf(133);
+        BigInteger privateKey3 = algorithm.getRandomLessThan(length, lessThan3);
+        Assert.assertTrue(privateKey3.compareTo(lessThan3) == -1);
     }
 
 

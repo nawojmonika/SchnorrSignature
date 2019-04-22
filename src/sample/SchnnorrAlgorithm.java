@@ -18,6 +18,7 @@ public class SchnnorrAlgorithm {
 
     public void init(){
         this.generatePublicVariables();
+        this.generateKeys();
     }
 
     private void generatePublicVariables(){
@@ -50,20 +51,32 @@ public class SchnnorrAlgorithm {
     }
 
     public void generateKeys(){
-        this.s = this.getPrivateKey(100, this.q);
+        this.s = this.getRandomLessThan(100, this.q);
         this.v = getPublicKey(this.a, this.s, this.p);
-    }
-
-    public BigInteger getPrivateKey(int bitLength, BigInteger q){
-        Random rand = new Random();
-        BigInteger s = BigInteger.probablePrime(bitLength, rand);
-        if(s.compareTo(q) != -1){
-            this.getPrivateKey(bitLength, q);
-        }
-        return  s;
     }
 
     public BigInteger getPublicKey(BigInteger a, BigInteger s, BigInteger p){
         return a.modPow(s.negate(), p);
+    }
+
+    public BigInteger getRandomLessThan(int bitLength, BigInteger less){
+        Random rand = new Random();
+        BigInteger random = new BigInteger(bitLength, 1, rand);
+        if(random.compareTo(less) != -1){
+            this.getRandomLessThan(bitLength,  less);
+        }
+        return  random;
+    }
+
+    public BigInteger[] sign(String M){
+        // getting 'e'
+        BigInteger r = this.getRandomLessThan(100, this.q);
+        String x = this.a.modPow(r, this.p).toString();
+        String message = M.concat(x);
+        BigInteger e = BigInteger.valueOf(message.hashCode());    // e = H(M,x)
+        // getting 'y'
+        BigInteger y = (r.add(this.s.multiply(e))).mod(this.q); // y = (r + se) mod q
+        BigInteger[] sign = {e, y};
+        return sign;
     }
 }
