@@ -37,12 +37,10 @@ public class SchnnorrAlgorithmTest {
     @Test
     public void getValueOfaTest(){
         // Test of generating 'a' value
-        BigInteger one = new BigInteger("1");
-
         BigInteger q1 = new BigInteger("3");
         BigInteger p1 = new BigInteger("7");
 
-        int modp1 = one.mod(p1).intValue();
+        int modp1 = BigInteger.ONE.mod(p1).intValue();
         BigInteger a1 = algorithm.getValueOfa(q1, p1);
         int check1 = a1.pow(q1.intValue()).intValue();
 
@@ -52,7 +50,7 @@ public class SchnnorrAlgorithmTest {
         BigInteger q2 = new BigInteger("5");
         BigInteger p2 = new BigInteger("11");
 
-        int modp2 = one.mod(p2).intValue();
+        int modp2 = BigInteger.ONE.mod(p2).intValue();
         BigInteger a2 = algorithm.getValueOfa(q2, p2);
         int check2 = a2.pow(q2.intValue()).intValue();
 
@@ -62,7 +60,7 @@ public class SchnnorrAlgorithmTest {
         BigInteger q3 = new BigInteger("3");
         BigInteger p3 = new BigInteger("13");
 
-        int modp3 = one.mod(p3).intValue();
+        int modp3 = BigInteger.ONE.mod(p3).intValue();
         BigInteger a3 = algorithm.getValueOfa(q3, p3);
         int check3 = a3.pow(q3.intValue()).intValue();
 
@@ -71,7 +69,7 @@ public class SchnnorrAlgorithmTest {
         BigInteger q4 = new BigInteger("2");
         BigInteger p4 = new BigInteger("73");
 
-        int modp4 = one.mod(p4).intValue();
+        int modp4 = BigInteger.ONE.mod(p4).intValue();
         BigInteger a4 = algorithm.getValueOfa(q4, p4);
         int check4 = a4.pow(q4.intValue()).intValue();
 

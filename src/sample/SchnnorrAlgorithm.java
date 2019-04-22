@@ -5,7 +5,6 @@ import java.util.*;
 
 public class SchnnorrAlgorithm {
     // Constraints
-    private final BigInteger one = new BigInteger("1");
 
 
     // Public variables
@@ -25,9 +24,7 @@ public class SchnnorrAlgorithm {
         this.p = this.getPrime(512);
         this.q = this.getFactorOfPrime(this.p, 140);
         this.a = this.getValueOfa(this.q, this.p);
-        if(a.equals(one)){
-            this.generatePublicVariables();
-        }
+        System.out.println(this.a);
     }
 
     private BigInteger getPrime(int bitLength){
@@ -36,18 +33,17 @@ public class SchnnorrAlgorithm {
     }
 
     public BigInteger getFactorOfPrime(BigInteger p, int bitLength){
-        BigInteger zero = new BigInteger("0");
         BigInteger q =  this.getPrime(bitLength);
         BigInteger prime = p.add(new BigInteger("-1"));
-        while (!prime.remainder(q).equals(zero)){
+        while (!prime.remainder(q).equals(BigInteger.ZERO)){
             q = this.getPrime(bitLength);
         }
         return  q;
     }
 
     public BigInteger getValueOfa(BigInteger q, BigInteger p){
-        int power = this.one.divide(q).intValue();
-        return this.one.mod(p).pow(power);
+        int power = BigInteger.ONE.divide(q).intValue();
+        return BigInteger.ONE.mod(p).pow(power);
     }
 
     public void generateKeys(){
