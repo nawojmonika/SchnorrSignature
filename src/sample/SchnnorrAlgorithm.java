@@ -24,7 +24,6 @@ public class SchnnorrAlgorithm {
         this.p = this.getPrime(512);
         this.q = this.getFactorOfPrime(this.p, 140);
         this.a = this.getValueOfa(this.q, this.p);
-        System.out.println(this.a);
     }
 
     private BigInteger getPrime(int bitLength){
@@ -47,7 +46,16 @@ public class SchnnorrAlgorithm {
     }
 
     public void generateKeys(){
+        this.s = this.getPrivateKey(100, this.q);
 
+    }
 
+    public BigInteger getPrivateKey(int bitLength, BigInteger q){
+        Random rand = new Random();
+        BigInteger s = BigInteger.probablePrime(bitLength, rand);
+        if(s.compareTo(q) != -1){
+            this.getPrivateKey(bitLength, q);
+        }
+        return  s;
     }
 }

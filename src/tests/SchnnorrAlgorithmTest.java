@@ -39,5 +39,22 @@ public class SchnnorrAlgorithmTest {
         // TO DO;
     }
 
+    @Test
+    public void getPrivateKeyTest(){
+        int length = 2;
+
+        BigInteger q1 = BigInteger.valueOf(7);
+        BigInteger privateKey1 = algorithm.getPrivateKey(length, q1);
+        Assert.assertTrue(privateKey1.compareTo(q1) == -1);
+
+        BigInteger q2 = BigInteger.valueOf(11);
+        BigInteger privateKey2 = algorithm.getPrivateKey(length, q2);
+        Assert.assertTrue(privateKey2.compareTo(q2) == -1);
+
+        BigInteger q3 = BigInteger.valueOf(13);
+        BigInteger privateKey3 = algorithm.getPrivateKey(length, q3);
+        Assert.assertTrue(privateKey3.compareTo(q3) == -1);
+    }
+
 
 }
