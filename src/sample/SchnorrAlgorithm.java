@@ -3,13 +3,13 @@ package sample;
 import java.math.BigInteger;
 import java.util.*;
 
-public class SchnnorrAlgorithm {
+public class SchnorrAlgorithm {
     // Constraints
 
 
     // Public variables
     public BigInteger p; // 512-bit prime
-    public BigInteger q; // 140=bit prime & factor of p -1
+    public BigInteger q; // 140-bit prime & factor of p -1
     public BigInteger a; // a != 1 && a^q === 1(modp)
 
     // Keys
@@ -34,10 +34,7 @@ public class SchnnorrAlgorithm {
     private void generatePublicVariables(){
         this.q = this.getRandomPrime(140);
         this.p = this.getPrimeOfFactor(this.q, 373); //512 - 140 + 1
-        this.a = this.getValueOfa(this.q, this.p);
-        if(this.a.equals(BigInteger.ONE) && !this.a.isProbablePrime(9999)){
-            this.generatePublicVariables();
-        }
+        this.a = this.getCoefficient(this.q, this.p);
     }
 
     private BigInteger getRandomPrime(int bitLength){
@@ -55,9 +52,15 @@ public class SchnnorrAlgorithm {
         return p;
     }
 
-    public BigInteger getValueOfa(BigInteger q, BigInteger p){
-        BigInteger e0 = BigInteger.valueOf(2);
-        return e0.modPow((p.subtract(BigInteger.ONE).divide(q)), p);
+    public BigInteger getCoefficient(BigInteger q, BigInteger p){
+        BigInteger g;
+        do {
+            BigInteger two = BigInteger.valueOf(2);
+            BigInteger a = (two.add(this.getRandomPrime(q.bitLength()))).mod(p);
+            BigInteger ga = p.subtract(BigInteger.ONE).divide(q);
+            g = a.modPow(ga, p);
+        }while (g.equals(BigInteger.ONE));
+      return g;
     }
 
     public void generateKeys(){
