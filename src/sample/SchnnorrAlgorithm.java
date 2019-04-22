@@ -33,9 +33,9 @@ public class SchnnorrAlgorithm {
 
     private void generatePublicVariables(){
         this.q = this.getRandomPrime(140);
-        this.p = this.getPrimeOfFactor(this.q, 373);
+        this.p = this.getPrimeOfFactor(this.q, 373); //512 - 140 + 1
         this.a = this.getValueOfa(this.q, this.p);
-        if(this.a.equals(BigInteger.ONE)){
+        if(this.a.equals(BigInteger.ONE) && !this.a.isProbablePrime(9999)){
             this.generatePublicVariables();
         }
     }
@@ -49,7 +49,7 @@ public class SchnnorrAlgorithm {
         BigInteger p;
         do{
             Random r = new Random();
-            BigInteger k = new BigInteger(bitLength,  r);
+            BigInteger k = new BigInteger(bitLength,  r).add(BigInteger.ONE);
             p = (q.multiply(k)).add(BigInteger.ONE);
         }while (!p.isProbablePrime(9999) && p.bitLength() != 512);
         return p;
@@ -57,8 +57,7 @@ public class SchnnorrAlgorithm {
 
     public BigInteger getValueOfa(BigInteger q, BigInteger p){
         BigInteger e0 = BigInteger.valueOf(2);
-        BigInteger a = e0.modPow((p.subtract(BigInteger.ONE).divide(q)), p);
-        return a;
+        return e0.modPow((p.subtract(BigInteger.ONE).divide(q)), p);
     }
 
     public void generateKeys(){
@@ -87,31 +86,41 @@ public class SchnnorrAlgorithm {
     public BigInteger[] getSign(String M, BigInteger q, BigInteger a, BigInteger p, BigInteger s){
         // getting 'e'
         BigInteger r = this.getRandomLessThan(100, q);
-        String x = a.modPow(r, p).toString();
-        BigInteger e = this.concatAndHash(M, x);
+        BigInteger e = getFirstPartOfSign(r, p, M);
+
         // getting 'y'
-        BigInteger y = (r.add(s.multiply(e))).mod(q); // y = (r + se) mod q
+        BigInteger y = this.getSecondPartOfSign(r, s, e, q);
         BigInteger[] sign = {e, y};
         return sign;
     }
+
+    public BigInteger getFirstPartOfSign(BigInteger r, BigInteger p, String M){
+        BigInteger x = a.modPow(r, p);
+        return  this.concatAndHash(M, x);
+    }
+
+    public BigInteger getSecondPartOfSign(BigInteger r, BigInteger s, BigInteger e, BigInteger q){
+        return (r.add(s.multiply(e))).mod(q); // y = (r + se) mod q
+    }
+
 
     public  boolean verifySign(String M, BigInteger[] sign, BigInteger a, BigInteger p, BigInteger v){
         BigInteger e = sign[0];
         BigInteger y = sign[1];
 
-        BigInteger x1 = a.modPow(y, p);         //a^y
-        BigInteger x2 = v.modPow(e, p).mod(p);  //v^e
+        BigInteger x1 = a.modPow(y, p);  //a^y
+        BigInteger x2 = v.modPow(e, p);  //v^e
 
-        String  x = x1.multiply(x2).mod(p).toString(); // a^y*v^e mod p
+        BigInteger  x = x1.multiply(x2).mod(p); // a^y*v^e mod p
 
         BigInteger ev = concatAndHash(M, x);
 
         return e.equals(ev);
     }
 
-    public BigInteger concatAndHash(String M, String x){
-        String message = M.concat(x);
-        BigInteger e = BigInteger.valueOf(message.hashCode());    // e = H(M,x)
+    public BigInteger concatAndHash(String M, BigInteger x){
+        String message = M.concat(x.toString());
+        BigInteger e = BigInteger.valueOf(message.hashCode()).abs();    // e = H(M,x)
         return e;
     }
 }
