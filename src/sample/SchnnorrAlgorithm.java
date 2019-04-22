@@ -21,27 +21,37 @@ public class SchnnorrAlgorithm {
         this.generateKeys();
     }
 
-    private void generatePublicVariables(){
-        this.p = this.getPrime(512);
-        this.q = this.getFactorOfPrime(this.p, 140);
-        this.a = this.getValueOfa(this.q, this.p);
-        if(this.a.equals(BigInteger.ONE)){
-            this.generatePublicVariables();
-        }
+    public BigInteger[] getConstrains(){
+        BigInteger[] constraints = {this.p, this.q, this.a};
+        return  constraints;
     }
 
-    private BigInteger getPrime(int bitLength){
+    public BigInteger[] getKeys(){
+        BigInteger[] keys = {this.s, this.v};
+        return  keys;
+    }
+
+    private void generatePublicVariables(){
+        this.q = this.getRandomPrime(140);
+        this.p = this.getPrimeOfFactor(this.q,300);
+        this.a = this.getValueOfa(this.q, this.p);
+//        if(this.a.equals(BigInteger.ONE)){
+//            this.generatePublicVariables();
+//        }
+    }
+
+    private BigInteger getRandomPrime(int bitLength){
         Random rand = new Random();
         return BigInteger.probablePrime(bitLength, rand);
     }
 
-    public BigInteger getFactorOfPrime(BigInteger p, int bitLength){
-        BigInteger q =  this.getPrime(bitLength);
-        BigInteger prime = p.add(new BigInteger("-1"));
-        while (!prime.remainder(q).equals(BigInteger.ZERO)){
-            q = this.getPrime(bitLength);
-        }
-        return  q;
+    public BigInteger getPrimeOfFactor(BigInteger q, int bitLength){
+        BigInteger p;
+        do{
+            BigInteger k = this.getRandomPrime(bitLength);
+            p = (q.multiply(k)).add(BigInteger.ONE);
+        }while (p.isProbablePrime(999));
+        return p;
     }
 
     public BigInteger getValueOfa(BigInteger q, BigInteger p){
@@ -68,15 +78,34 @@ public class SchnnorrAlgorithm {
         return  random;
     }
 
-    public BigInteger[] sign(String M){
+    public BigInteger[] getSign(String M, BigInteger q, BigInteger a, BigInteger p, BigInteger s){
         // getting 'e'
-        BigInteger r = this.getRandomLessThan(100, this.q);
-        String x = this.a.modPow(r, this.p).toString();
-        String message = M.concat(x);
-        BigInteger e = BigInteger.valueOf(message.hashCode());    // e = H(M,x)
+        BigInteger r = this.getRandomLessThan(100, q);
+        String x = a.modPow(r, p).toString();
+        BigInteger e = this.concatAndHash(M, x);
         // getting 'y'
-        BigInteger y = (r.add(this.s.multiply(e))).mod(this.q); // y = (r + se) mod q
+        BigInteger y = (r.add(s.multiply(e))).mod(q); // y = (r + se) mod q
         BigInteger[] sign = {e, y};
         return sign;
+    }
+
+    public  boolean verifySign(String M, BigInteger[] sign, BigInteger a, BigInteger p, BigInteger v){
+        BigInteger e = sign[0];
+        BigInteger y = sign[1];
+
+        BigInteger x1 = a.modPow(y, p);         //a^y
+        BigInteger x2 = v.modPow(e, p).mod(p);  //v^e
+
+        String  x = x1.multiply(x2).mod(p).toString(); // a^y*v^e mod p
+
+        BigInteger ev = concatAndHash(M, x);
+
+        return e.equals(ev);
+    }
+
+    public BigInteger concatAndHash(String M, String x){
+        String message = M.concat(x);
+        BigInteger e = BigInteger.valueOf(message.hashCode());    // e = H(M,x)
+        return e;
     }
 }

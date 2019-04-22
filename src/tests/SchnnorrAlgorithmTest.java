@@ -12,38 +12,38 @@ public class SchnnorrAlgorithmTest {
     SchnnorrAlgorithm algorithm = new SchnnorrAlgorithm();
 
     /* Public variables tests */
-    @Test
-    public void factorOfPrimeTest() {
-        // Test of generating 'q' value
-        BigInteger prime1 = new BigInteger("7");
-        int[] possibleFactors1 = {1, 2, 3, 6};
-        int factor1 = algorithm.getFactorOfPrime(prime1, 2).intValue();
+//    @Test
+//    public void factorOfPrimeTest() {
+//        // Test of generating 'q' value
+//        BigInteger prime1 = new BigInteger("7");
+//        int[] possibleFactors1 = {1, 2, 3, 6};
+//        int factor1 = algorithm.getFactorOfPrime(prime1, 2).intValue();
+//
+//        Assert.assertTrue("Expected to be one of: [1, 2, 3, 6] actual: " + factor1, IntStream.of(possibleFactors1).anyMatch(x -> x == factor1));
+//
+//        BigInteger prime2 = new BigInteger("11");
+//        int[] possibleFactors2 = {1, 2, 5, 10};
+//        int factor2 = algorithm.getFactorOfPrime(prime2, 2).intValue();
+//
+//        Assert.assertTrue("Expected to be one of: [1, 2, 5, 10] actual: " + factor2, IntStream.of(possibleFactors2).anyMatch(x -> x == factor2));
+//
+//        BigInteger prime3 = new BigInteger("13");
+//        int[] possibleFactors3 = {1, 2, 3, 6, 12};
+//        int factor3 = algorithm.getFactorOfPrime(prime3, 2).intValue();
+//
+//        Assert.assertTrue("Expected to be one of: [1, 2, 3, 6, 12] actual: " + factor3, IntStream.of(possibleFactors3).anyMatch(x -> x == factor3));
+//    }
 
-        Assert.assertTrue("Expected to be one of: [1, 2, 3, 6] actual: " + factor1, IntStream.of(possibleFactors1).anyMatch(x -> x == factor1));
-
-        BigInteger prime2 = new BigInteger("11");
-        int[] possibleFactors2 = {1, 2, 5, 10};
-        int factor2 = algorithm.getFactorOfPrime(prime2, 2).intValue();
-
-        Assert.assertTrue("Expected to be one of: [1, 2, 5, 10] actual: " + factor2, IntStream.of(possibleFactors2).anyMatch(x -> x == factor2));
-
-        BigInteger prime3 = new BigInteger("13");
-        int[] possibleFactors3 = {1, 2, 3, 6, 12};
-        int factor3 = algorithm.getFactorOfPrime(prime3, 2).intValue();
-
-        Assert.assertTrue("Expected to be one of: [1, 2, 3, 6, 12] actual: " + factor3, IntStream.of(possibleFactors3).anyMatch(x -> x == factor3));
-    }
-
-    @Test
-    public void getValueOfaTest(){
-        //TO DO
-    }
+//    @Test
+//    public void getValueOfaTest(){
+//        //TO DO
+//    }
 
 
-    @Test
-    public void getPublicKeyTest(){
-        // TO DO
-    }
+//    @Test
+//    public void getPublicKeyTest(){
+//        // TO DO
+//    }
 
     @Test
     public void getRandomLessThanTest(){
@@ -60,6 +60,25 @@ public class SchnnorrAlgorithmTest {
         BigInteger lessThan3 = BigInteger.valueOf(133);
         BigInteger privateKey3 = algorithm.getRandomLessThan(length, lessThan3);
         Assert.assertTrue(privateKey3.compareTo(lessThan3) == -1);
+    }
+
+    @Test
+    public void signTest(){
+        String message1 = "Ala ma kota";
+        algorithm.init();
+        System.out.println("After init");
+        BigInteger[] constraints = algorithm.getConstrains();
+        BigInteger[] keys = algorithm.getKeys();
+        BigInteger p = constraints[0];
+        BigInteger q = constraints[1];
+        BigInteger a = constraints[2];
+        BigInteger s = keys[0];
+        BigInteger v = keys[1];
+
+        BigInteger[] sign = algorithm.getSign(message1, q, a, p, s);
+        boolean verify = algorithm.verifySign(message1, sign, a, p, v);
+
+        Assert.assertTrue(verify);
     }
 
 
