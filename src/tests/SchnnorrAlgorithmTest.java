@@ -85,6 +85,46 @@ public class SchnnorrAlgorithmTest {
         Assert.assertTrue(privateKey3.compareTo(lessThan3) == -1);
     }
 
+    @Test
+    public void getPublicKeyTest() {
+        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
+
+        BigInteger a1 = BigInteger.valueOf(11444);
+        BigInteger s1 = BigInteger.valueOf(357);
+        BigInteger p1 = BigInteger.valueOf(48731);
+        int expectedValue1 = 7355;
+        int result1 = algorithm.getPublicKey(a1, s1, p1).intValue();
+        Assert.assertEquals(expectedValue1, result1);
+
+        BigInteger a2 = BigInteger.valueOf(3);
+        BigInteger s2 = BigInteger.valueOf(0);
+        BigInteger p2 = BigInteger.valueOf(11);
+        int expectedValue2 = 1;
+        int result2 = algorithm.getPublicKey(a2, s2, p2).intValue();
+        Assert.assertEquals(expectedValue2, result2);
+
+        BigInteger a3 = BigInteger.valueOf(4);
+        BigInteger s3 = BigInteger.valueOf(1);
+        BigInteger p3 = BigInteger.valueOf(11);
+        int expectedValue3 = 3;
+        int result3 = algorithm.getPublicKey(a3, s3, p3).intValue();
+        Assert.assertEquals(expectedValue3, result3);
+
+        BigInteger a4 = BigInteger.valueOf(5);
+        BigInteger s4 = BigInteger.valueOf(3);
+        BigInteger p4 = BigInteger.valueOf(11);
+        int expectedValue4 = 3;
+        int result4 = algorithm.getPublicKey(a4, s4, p4).intValue();
+        Assert.assertEquals(expectedValue4, result4);
+
+        BigInteger a5 = BigInteger.valueOf(9);
+        BigInteger s5 = BigInteger.valueOf(4);
+        BigInteger p5 = BigInteger.valueOf(11);
+        int expectedValue5 = 9;
+        int result5 = algorithm.getPublicKey(a5, s5, p5).intValue();
+        Assert.assertEquals(expectedValue5, result5);
+    }
+
 //    @Test
 //    public void signTest(){
 //        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
