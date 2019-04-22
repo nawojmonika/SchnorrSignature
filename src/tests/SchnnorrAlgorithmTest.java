@@ -36,7 +36,7 @@ public class SchnnorrAlgorithmTest {
 
     @Test
     public void getValueOfaTest(){
-        // TO DO;
+        //TO DO
     }
 
     @Test
@@ -54,6 +54,11 @@ public class SchnnorrAlgorithmTest {
         BigInteger q3 = BigInteger.valueOf(13);
         BigInteger privateKey3 = algorithm.getPrivateKey(length, q3);
         Assert.assertTrue(privateKey3.compareTo(q3) == -1);
+    }
+
+    @Test
+    public void getPublicKeyTest(){
+        // TO DO
     }
 
 

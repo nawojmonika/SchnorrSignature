@@ -24,6 +24,9 @@ public class SchnnorrAlgorithm {
         this.p = this.getPrime(512);
         this.q = this.getFactorOfPrime(this.p, 140);
         this.a = this.getValueOfa(this.q, this.p);
+        if(this.a.equals(BigInteger.ONE)){
+            this.generatePublicVariables();
+        }
     }
 
     private BigInteger getPrime(int bitLength){
@@ -42,12 +45,13 @@ public class SchnnorrAlgorithm {
 
     public BigInteger getValueOfa(BigInteger q, BigInteger p){
         BigInteger e0 = BigInteger.valueOf(2);
-        return e0.modPow((p.subtract(BigInteger.ONE).divide(q)), p);
+        BigInteger a = e0.modPow((p.subtract(BigInteger.ONE).divide(q)), p);
+        return a;
     }
 
     public void generateKeys(){
         this.s = this.getPrivateKey(100, this.q);
-
+        this.v = getPublicKey(this.a, this.s, this.p);
     }
 
     public BigInteger getPrivateKey(int bitLength, BigInteger q){
@@ -57,5 +61,9 @@ public class SchnnorrAlgorithm {
             this.getPrivateKey(bitLength, q);
         }
         return  s;
+    }
+
+    public BigInteger getPublicKey(BigInteger a, BigInteger s, BigInteger p){
+        return a.modPow(s.negate(), p);
     }
 }
