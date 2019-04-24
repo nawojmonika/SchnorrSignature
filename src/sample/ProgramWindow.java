@@ -27,7 +27,8 @@ public class ProgramWindow {
     private static Label privateKeyLabel = null;
     private static TextField privateKeyInput = null;
     private static TextField publicKeyInput = null;
-
+    private static TextField signEInput = null;
+    private static TextField signYInput = null;
     private static TextArea textarea = null;
     private static Button actionButton = null;
 
@@ -126,8 +127,26 @@ public class ProgramWindow {
         this.textarea.setPrefSize(400, 100);
         inputsGrid.add(textarea,3, 4, 4, 1);
 
+        Label signature = new Label("Signature: ");
+        inputsGrid.add(signature, 2,6);
+        GridPane.setHalignment(signature, HPos.CENTER);
+
+        Label signELabel = new Label(" e: ");
+        inputsGrid.add(signELabel, 3,6);
+        GridPane.setHalignment(signELabel, HPos.RIGHT);
+
+        this.signEInput = new TextField();
+        inputsGrid.add(this.signEInput,4,6);
+
+        Label signYLabel = new Label(" y: ");
+        inputsGrid.add(signYLabel, 5,6);
+        GridPane.setHalignment(signYLabel, HPos.RIGHT);
+
+        this.signYInput = new TextField();
+        inputsGrid.add(this.signYInput,6,6);
+
         this.actionButton = new Button("Sign");
-        inputsGrid.add(actionButton, 6, 6);
+        inputsGrid.add(actionButton, 6, 7);
         GridPane.setHalignment(this.actionButton, HPos.RIGHT);
 
         this.borderPane.setCenter(inputsGrid);
@@ -176,7 +195,6 @@ public class ProgramWindow {
         BigInteger s = new BigInteger(this.privateKeyInput.getText());
 
         BigInteger[] signature = algorithm.getSign(message, q, a, p, s);
-        this.saveToFile(signature);
     }
 
     private void saveToFile(BigInteger[] content){
