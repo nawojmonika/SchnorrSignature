@@ -23,6 +23,7 @@ public class ProgramWindow {
     private static TextField pInput = null;
     private static TextField qInput = null;
     private static TextField aInput = null;
+    private static Label privateKeyLabel = null;
     private static TextField privateKeyInput = null;
     private static TextField publicKeyInput = null;
 
@@ -51,8 +52,12 @@ public class ProgramWindow {
     private void setupMenu(){
         MenuBar menuBar = new MenuBar();
         Menu message = new Menu("Message");
+
         MenuItem send = new MenuItem("Send");
+        send.setOnAction(event -> this.setSignMessage());
+
         MenuItem receive = new MenuItem("Receive");
+        receive.setOnAction(event -> this.setVerifySignature());
 
         message.getItems().addAll(send, receive);
 
@@ -100,8 +105,8 @@ public class ProgramWindow {
         this.aInput = new TextField();
         inputsGrid.add(this.aInput, 6,2);
 
-        Label privateKeyLabel = new Label(" Private key: ");
-        inputsGrid.add(privateKeyLabel, 3, 3);
+        this.privateKeyLabel = new Label(" Private key: ");
+        inputsGrid.add(this.privateKeyLabel, 3, 3);
 
         this.privateKeyInput = new TextField();
         inputsGrid.add(this.privateKeyInput, 4, 3);
@@ -146,6 +151,15 @@ public class ProgramWindow {
 
     private void setSignMessage(){
         this.actionButton.setText("Sign");
+        this.privateKeyLabel.setVisible(true);
+        this.privateKeyInput.setVisible(true);
+        this.actionButton.setOnAction(event -> this.signMessage());
+    }
+
+    private void setVerifySignature(){
+        this.actionButton.setText("Verify Signature");
+        this.privateKeyLabel.setVisible(false);
+        this.privateKeyInput.setVisible(false);
         this.actionButton.setOnAction(event -> this.signMessage());
     }
 
