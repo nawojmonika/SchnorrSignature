@@ -111,7 +111,6 @@ public class SchnorrAlgorithm {
         BigInteger y = sign[1];
         BigInteger x = verifyXValue(a, v, y, e, p);
         BigInteger ev = concatAndHash(M, x);
-
         return e.equals(ev);
     }
 
@@ -125,7 +124,6 @@ public class SchnorrAlgorithm {
 
     public BigInteger concatAndHash(String M, BigInteger x){
         String message = M.concat(x.toString());
-        BigInteger e = BigInteger.valueOf(message.hashCode()).abs();    // e = H(M,x)
-        return e;
+        return BigInteger.valueOf(message.hashCode()).abs();    // e = H(M,x)
     }
 }

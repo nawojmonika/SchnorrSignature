@@ -5,6 +5,7 @@ import org.junit.Test;
 import sample.SchnorrAlgorithm;
 
 import java.math.BigInteger;
+import java.util.stream.IntStream;
 
 public class SchnnorrAlgorithmTest {
 
@@ -43,7 +44,6 @@ public class SchnnorrAlgorithmTest {
         Boolean check1 = modCheck1.equals(BigInteger.ONE);
         Assert.assertTrue("Expected value: 1, Actual: " + modCheck1.intValue(),check1);
 
-
         BigInteger p2 = BigInteger.valueOf(71);
         BigInteger q2 = BigInteger.valueOf(5);
         BigInteger a2 = algorithm.getCoefficient(q2, p2);
@@ -64,6 +64,14 @@ public class SchnnorrAlgorithmTest {
         BigInteger modCheck4 = a4.modPow(q4, p4);
         Boolean check4 = modCheck4.equals(BigInteger.ONE);
         Assert.assertTrue("Expected value: 1, Actual: " + modCheck4.intValue(),check4);
+
+
+        BigInteger p5 = BigInteger.valueOf(11);
+        BigInteger q5 = BigInteger.valueOf(5);
+        int[] possibleValues = {3,4,5,9};
+        int result = algorithm.getCoefficient(q5,p5).intValue();
+        Boolean check5 = IntStream.of(possibleValues).anyMatch(x -> x == result);
+        Assert.assertTrue(check5);
     }
 
 
@@ -261,26 +269,22 @@ public class SchnnorrAlgorithmTest {
         Assert.assertEquals(expectedResult5, result5);
     }
 
+    @Test
+    public void signTest(){
+        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
+        String message1 = "Ala ma kota";
+        algorithm.init();
+        BigInteger[] constraints = algorithm.getConstrains();
+        BigInteger[] keys = algorithm.getKeys();
+        BigInteger p = constraints[0];
+        BigInteger q = constraints[1];
+        BigInteger a = constraints[2];
+        BigInteger s = keys[0];
+        BigInteger v = keys[1];
 
-//    @Test
-//    public void signTest(){
-//        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
-//
-//        String message1 = "Ala ma kota";
-//        algorithm.init();
-//        BigInteger[] constraints = algorithm.getConstrains();
-//        BigInteger[] keys = algorithm.getKeys();
-//        BigInteger p = constraints[0];
-//        BigInteger q = constraints[1];
-//        BigInteger a = constraints[2];
-//        BigInteger s = keys[0];
-//        BigInteger v = keys[1];
-//
-//        BigInteger[] sign = algorithm.getSign(message1, q, a, p, s);
-//        boolean verify = algorithm.verifySign(message1, sign, a, p, v);
-//
-//        Assert.assertTrue(verify);
-//    }
+        BigInteger[] sign = algorithm.getSign(message1, q, a, p, s);
+        boolean verify = algorithm.verifySign(message1, sign, a, p, v);
 
-
+        Assert.assertTrue(verify);
+    }
 }
