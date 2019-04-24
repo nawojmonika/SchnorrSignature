@@ -165,6 +165,50 @@ public class SchnnorrAlgorithmTest {
         Assert.assertEquals(expectedResult5, result5);
     }
 
+    @Test
+    public void getSignYValueTest(){
+        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
+        BigInteger r1 = BigInteger.valueOf(274);
+        BigInteger s1 = BigInteger.valueOf(357);
+        BigInteger e1 = BigInteger.valueOf(129);
+        BigInteger q1 = BigInteger.valueOf(443);
+        BigInteger expectedResult1 = BigInteger.valueOf(255);
+        BigInteger result1 = algorithm.getSignYValue(r1, s1, e1, q1);
+        Assert.assertEquals(expectedResult1, result1);
+
+        BigInteger r2 = BigInteger.valueOf(0);
+        BigInteger s2 = BigInteger.valueOf(0);
+        BigInteger e2 = BigInteger.valueOf(1);
+        BigInteger q2 = BigInteger.valueOf(5);
+        BigInteger expectedResult2 = BigInteger.valueOf(0);
+        BigInteger result2 = algorithm.getSignYValue(r2, s2, e2, q2);
+        Assert.assertEquals(expectedResult2, result2);
+
+        BigInteger r3 = BigInteger.valueOf(2);
+        BigInteger s3 = BigInteger.valueOf(1);
+        BigInteger e3 = BigInteger.valueOf(2);
+        BigInteger q3 = BigInteger.valueOf(5);
+        BigInteger expectedResult3 = BigInteger.valueOf(4);
+        BigInteger result3 = algorithm.getSignYValue(r3, s3, e3, q3);
+        Assert.assertEquals(expectedResult3, result3);
+
+        BigInteger r4 = BigInteger.valueOf(2);
+        BigInteger s4 = BigInteger.valueOf(3);
+        BigInteger e4 = BigInteger.valueOf(2);
+        BigInteger q4 = BigInteger.valueOf(5);
+        BigInteger expectedResult4 = BigInteger.valueOf(3);
+        BigInteger result4 = algorithm.getSignYValue(r4, s4, e4, q4);
+        Assert.assertEquals(expectedResult4, result4);
+
+        BigInteger r5 = BigInteger.valueOf(4);
+        BigInteger s5 = BigInteger.valueOf(4);
+        BigInteger e5 = BigInteger.valueOf(1);
+        BigInteger q5 = BigInteger.valueOf(5);
+        BigInteger expectedResult5 = BigInteger.valueOf(3);
+        BigInteger result5 = algorithm.getSignYValue(r5, s5, e5, q5);
+        Assert.assertEquals(expectedResult5, result5);
+    }
+
 //    @Test
 //    public void signTest(){
 //        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();

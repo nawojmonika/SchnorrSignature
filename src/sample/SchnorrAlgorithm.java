@@ -93,7 +93,7 @@ public class SchnorrAlgorithm {
         BigInteger e = this.concatAndHash(M, x);
 
         // getting 'y'
-        BigInteger y = this.getSecondPartOfSign(r, s, e, q);
+        BigInteger y = this.getSignYValue(r, s, e, q);
         BigInteger[] sign = {e, y};
         return sign;
     }
@@ -102,7 +102,7 @@ public class SchnorrAlgorithm {
         return a.modPow(r, p);
     }
 
-    public BigInteger getSecondPartOfSign(BigInteger r, BigInteger s, BigInteger e, BigInteger q){
+    public BigInteger getSignYValue(BigInteger r, BigInteger s, BigInteger e, BigInteger q){
         return (r.add(s.multiply(e))).mod(q); // y = (r + se) mod q
     }
 
