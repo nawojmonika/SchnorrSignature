@@ -209,6 +209,59 @@ public class SchnnorrAlgorithmTest {
         Assert.assertEquals(expectedResult5, result5);
     }
 
+    /* Sign verification tests */
+    @Test
+    public void verifyXValueTest(){
+        //   verifyXValue(a, v, y, e, p);
+        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
+
+        BigInteger a1 = BigInteger.valueOf(11444);
+        BigInteger v1 = BigInteger.valueOf(7355);
+        BigInteger y1 = BigInteger.valueOf(255);
+        BigInteger e1 = BigInteger.valueOf(129);
+        BigInteger p1 = BigInteger.valueOf(48731);
+        BigInteger expectedResult1 = BigInteger.valueOf(37123);
+        BigInteger result1 = algorithm.verifyXValue(a1, v1, y1, e1, p1);
+        Assert.assertEquals(expectedResult1, result1);
+
+        BigInteger a2 = BigInteger.valueOf(3);
+        BigInteger v2 = BigInteger.valueOf(1);
+        BigInteger y2 = BigInteger.valueOf(0);
+        BigInteger e2 = BigInteger.valueOf(1);
+        BigInteger p2 = BigInteger.valueOf(11);
+        BigInteger expectedResult2 = BigInteger.valueOf(1);
+        BigInteger result2 = algorithm.verifyXValue(a2, v2, y2, e2, p2);
+        Assert.assertEquals(expectedResult2, result2);
+
+        BigInteger a3 = BigInteger.valueOf(4);
+        BigInteger v3 = BigInteger.valueOf(3);
+        BigInteger y3 = BigInteger.valueOf(4);
+        BigInteger e3 = BigInteger.valueOf(2);
+        BigInteger p3 = BigInteger.valueOf(11);
+        BigInteger expectedResult3 = BigInteger.valueOf(5);
+        BigInteger result3 = algorithm.verifyXValue(a3, v3, y3, e3, p3);
+        Assert.assertEquals(expectedResult3, result3);
+
+        BigInteger a4 = BigInteger.valueOf(5);
+        BigInteger v4 = BigInteger.valueOf(3);
+        BigInteger y4 = BigInteger.valueOf(3);
+        BigInteger e4 = BigInteger.valueOf(2);
+        BigInteger p4 = BigInteger.valueOf(11);
+        BigInteger expectedResult4 = BigInteger.valueOf(3);
+        BigInteger result4 = algorithm.verifyXValue(a4, v4, y4, e4, p4);
+        Assert.assertEquals(expectedResult4, result4);
+
+        BigInteger a5 = BigInteger.valueOf(9);
+        BigInteger v5 = BigInteger.valueOf(9);
+        BigInteger y5 = BigInteger.valueOf(3);
+        BigInteger e5 = BigInteger.valueOf(1);
+        BigInteger p5 = BigInteger.valueOf(11);
+        BigInteger expectedResult5 = BigInteger.valueOf(5);
+        BigInteger result5 = algorithm.verifyXValue(a5, v5, y5, e5, p5);
+        Assert.assertEquals(expectedResult5, result5);
+    }
+
+
 //    @Test
 //    public void signTest(){
 //        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();

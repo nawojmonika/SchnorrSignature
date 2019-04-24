@@ -109,15 +109,18 @@ public class SchnorrAlgorithm {
     public  boolean verifySign(String M, BigInteger[] sign, BigInteger a, BigInteger p, BigInteger v){
         BigInteger e = sign[0];
         BigInteger y = sign[1];
-
-        BigInteger x1 = a.modPow(y, p);  //a^y
-        BigInteger x2 = v.modPow(e, p);  //v^e
-
-        BigInteger  x = x1.multiply(x2).mod(p); // a^y*v^e mod p
-
+        BigInteger x = verifyXValue(a, v, y, e, p);
         BigInteger ev = concatAndHash(M, x);
 
         return e.equals(ev);
+    }
+
+    public BigInteger verifyXValue(BigInteger a, BigInteger v,BigInteger y, BigInteger e, BigInteger p){
+        BigInteger x1 = a.modPow(y, p);  //a^y
+        BigInteger x2 = v.modPow(e, p);  //v^e
+
+        return x1.multiply(x2).mod(p); // a^y*v^e mod p
+
     }
 
     public BigInteger concatAndHash(String M, BigInteger x){
