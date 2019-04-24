@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import java.math.BigInteger;
 
 public class ProgramWindow {
     /* Form elements */
+    private static Stage mainStage = null;
     private static BorderPane borderPane = null;
     private static TextField pInput = null;
     private static TextField qInput = null;
@@ -29,11 +31,10 @@ public class ProgramWindow {
 
     /* Algorithm variables */
     private static SchnorrAlgorithm algorithm = null;
-    private BigInteger[] constraints = null;
-    private BigInteger[] keys = null;
 
     ProgramWindow(Stage mainStage){
-        mainStage.setTitle("Schnorr's signature");
+        this.mainStage = mainStage;
+        this.mainStage.setTitle("Schnorr's signature");
         Group root = new Group();
         Scene scene = new Scene(root, 800, 400);
         this.borderPane = new BorderPane();
@@ -44,6 +45,7 @@ public class ProgramWindow {
         mainStage.setScene(scene);
         mainStage.show();
         this.algorithm = new SchnorrAlgorithm();
+        this.setSignMessage();
     }
 
     private void setupMenu(){
@@ -143,16 +145,43 @@ public class ProgramWindow {
     }
 
     private void setSignMessage(){
+        this.actionButton.setText("Sign");
+        this.actionButton.setOnAction(event -> this.signMessage());
     }
 
-    private void SaveFile(String content, File file){
-        try {
-            FileWriter fileWriter = null;
+    private void signMessage(){
+        String message = this.textarea.getText();
+        BigInteger q = new BigInteger(this.qInput.getText());
+        BigInteger a = new BigInteger(this.aInput.getText());
+        BigInteger p = new BigInteger(this.pInput.getText());
+        BigInteger s = new BigInteger(this.privateKeyInput.getText());
 
-            fileWriter = new FileWriter(file);
-            fileWriter.write(content);
-            fileWriter.close();
-        } catch (IOException ex) {
+        BigInteger[] signature = algorithm.getSign(message, q, a, p, s);
+        this.saveToFile(signature);
+    }
+
+    private void saveToFile(BigInteger[] content){
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(mainStage);
+
+        if(file != null){
+            try {
+                FileWriter fileWriter = null;
+
+                fileWriter = new FileWriter(file);
+                for(BigInteger element: content){
+                    fileWriter.write(element.toString());
+                    fileWriter.write(System.getProperty( "line.separator" ));
+                }
+                fileWriter.close();
+            } catch (IOException ex) {
+            }
         }
     }
 }
