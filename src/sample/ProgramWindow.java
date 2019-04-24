@@ -75,6 +75,7 @@ public class ProgramWindow {
         Button generateButton = new Button("Generate values");
         inputsGrid.add(generateButton,6,1);
         GridPane.setHalignment(generateButton, HPos.RIGHT);
+        generateButton.setOnAction(event -> this.generateVariables());
 
         Label pLabel = new Label("p: ");
         inputsGrid.add(pLabel, 1,2);
@@ -121,13 +122,27 @@ public class ProgramWindow {
         inputsGrid.add(actionButton, 6, 6);
         GridPane.setHalignment(this.actionButton, HPos.RIGHT);
 
-//        inputsGrid.setGridLinesVisible(true);
-
         this.borderPane.setCenter(inputsGrid);
     }
 
-    private void setSignMessage(){
+    private void generateVariables(){
         this.algorithm.init();
+        BigInteger[] constraints = this.algorithm.getConstrains();
+        BigInteger[] keys = this.algorithm.getKeys();
+        BigInteger p = constraints[0];
+        BigInteger q = constraints[1];
+        BigInteger a = constraints[2];
+        BigInteger s = keys[0];
+        BigInteger v = keys[1];
+
+        this.pInput.setText(p.toString());
+        this.qInput.setText(q.toString());
+        this.aInput.setText(a.toString());
+        this.privateKeyInput.setText(s.toString());
+        this.publicKeyInput.setText(v.toString());
+    }
+
+    private void setSignMessage(){
     }
 
     private void SaveFile(String content, File file){
