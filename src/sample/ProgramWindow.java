@@ -209,7 +209,19 @@ public class ProgramWindow {
         BigInteger v = new BigInteger(this.publicKeyInput.getText());
 
         Boolean verify = algorithm.verifySign(message, sign, a, p, v);
-        System.out.println(verify);
+        this.showMessage(verify);
+    }
+
+    private void showMessage(Boolean verified){
+        Alert alert;
+        if(verified){
+            alert = new Alert(Alert.AlertType.CONFIRMATION, "Signature is correct");
+        }
+        else {
+            alert = new Alert(Alert.AlertType.ERROR, "Signature is not correct");
+        }
+        alert.show();
+
     }
 
     private void saveToFile(BigInteger[] content){
