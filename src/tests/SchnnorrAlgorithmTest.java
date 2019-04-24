@@ -5,7 +5,6 @@ import org.junit.Test;
 import sample.SchnorrAlgorithm;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 
 public class SchnnorrAlgorithmTest {
 
@@ -73,15 +72,15 @@ public class SchnnorrAlgorithmTest {
         SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
 
         BigInteger lessThan1 = BigInteger.valueOf(60);
-        BigInteger privateKey1 = algorithm.getRandomLessThan(lessThan1.bitLength(), lessThan1);
+        BigInteger privateKey1 = algorithm.getRandomLessThan(lessThan1);
         Assert.assertTrue(privateKey1.compareTo(lessThan1) == -1);
 
         BigInteger lessThan2 = BigInteger.valueOf(111);
-        BigInteger privateKey2 = algorithm.getRandomLessThan(lessThan2.bitLength(), lessThan2);
+        BigInteger privateKey2 = algorithm.getRandomLessThan(lessThan2);
         Assert.assertTrue(privateKey2.compareTo(lessThan2) == -1);
 
         BigInteger lessThan3 = BigInteger.valueOf(133);
-        BigInteger privateKey3 = algorithm.getRandomLessThan(lessThan3.bitLength(), lessThan3);
+        BigInteger privateKey3 = algorithm.getRandomLessThan(lessThan3);
         Assert.assertTrue(privateKey3.compareTo(lessThan3) == -1);
     }
 
@@ -123,6 +122,47 @@ public class SchnnorrAlgorithmTest {
         int expectedValue5 = 9;
         int result5 = algorithm.getPublicKey(a5, s5, p5).intValue();
         Assert.assertEquals(expectedValue5, result5);
+    }
+
+    /* Signing tests */
+
+    @Test
+    public void getSignXValueTest(){
+        SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
+        BigInteger a1 = BigInteger.valueOf(11444);
+        BigInteger r1 = BigInteger.valueOf(274);
+        BigInteger p1 = BigInteger.valueOf(48731);
+        BigInteger expectedResult1 = BigInteger.valueOf(37123);
+        BigInteger result1 = algorithm.getSignXValue(a1, r1, p1);
+        Assert.assertEquals(expectedResult1, result1);
+
+        BigInteger a2 = BigInteger.valueOf(3);
+        BigInteger r2 = BigInteger.valueOf(0);
+        BigInteger p2 = BigInteger.valueOf(11);
+        BigInteger expectedResult2 = BigInteger.valueOf(1);
+        BigInteger result2 = algorithm.getSignXValue(a2, r2, p2);
+        Assert.assertEquals(expectedResult2, result2);
+
+        BigInteger a3 = BigInteger.valueOf(4);
+        BigInteger r3 = BigInteger.valueOf(2);
+        BigInteger p3 = BigInteger.valueOf(11);
+        BigInteger expectedResult3 = BigInteger.valueOf(5);
+        BigInteger result3 = algorithm.getSignXValue(a3, r3, p3);
+        Assert.assertEquals(expectedResult3, result3);
+
+        BigInteger a4 = BigInteger.valueOf(5);
+        BigInteger r4 = BigInteger.valueOf(2);
+        BigInteger p4 = BigInteger.valueOf(11);
+        BigInteger expectedResult4 = BigInteger.valueOf(3);
+        BigInteger result4 = algorithm.getSignXValue(a4, r4, p4);
+        Assert.assertEquals(expectedResult4, result4);
+
+        BigInteger a5 = BigInteger.valueOf(9);
+        BigInteger r5 = BigInteger.valueOf(4);
+        BigInteger p5 = BigInteger.valueOf(11);
+        BigInteger expectedResult5 = BigInteger.valueOf(5);
+        BigInteger result5 = algorithm.getSignXValue(a5, r5, p5);
+        Assert.assertEquals(expectedResult5, result5);
     }
 
 //    @Test

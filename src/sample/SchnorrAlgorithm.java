@@ -69,18 +69,18 @@ public class SchnorrAlgorithm {
     }
 
     public BigInteger getPrivateKey(BigInteger q){
-        return this.getRandomLessThan(q.bitLength(), q);
+        return this.getRandomLessThan(q);
     }
 
     public BigInteger getPublicKey(BigInteger a, BigInteger s, BigInteger p){
         return a.modPow(s.negate(), p);
     }
 
-    public BigInteger getRandomLessThan(int bitLength, BigInteger less){
+    public BigInteger getRandomLessThan(BigInteger less){
         BigInteger random;
         do{
             Random rand = new Random();
-            random = new BigInteger(bitLength,  rand);
+            random = new BigInteger(less.bitLength(),  rand);
         }while (random.compareTo(less) != -1);
 
         return  random;
@@ -88,8 +88,9 @@ public class SchnorrAlgorithm {
 
     public BigInteger[] getSign(String M, BigInteger q, BigInteger a, BigInteger p, BigInteger s){
         // getting 'e'
-        BigInteger r = this.getRandomLessThan(100, q);
-        BigInteger e = getFirstPartOfSign(r, p, M);
+        BigInteger r = this.getRandomLessThan(q);
+        BigInteger x = this.getSignXValue(a,r,p);
+        BigInteger e = this.concatAndHash(M, x);
 
         // getting 'y'
         BigInteger y = this.getSecondPartOfSign(r, s, e, q);
@@ -97,15 +98,13 @@ public class SchnorrAlgorithm {
         return sign;
     }
 
-    public BigInteger getFirstPartOfSign(BigInteger r, BigInteger p, String M){
-        BigInteger x = a.modPow(r, p);
-        return  this.concatAndHash(M, x);
+    public BigInteger getSignXValue(BigInteger a, BigInteger r, BigInteger p){
+        return a.modPow(r, p);
     }
 
     public BigInteger getSecondPartOfSign(BigInteger r, BigInteger s, BigInteger e, BigInteger q){
         return (r.add(s.multiply(e))).mod(q); // y = (r + se) mod q
     }
-
 
     public  boolean verifySign(String M, BigInteger[] sign, BigInteger a, BigInteger p, BigInteger v){
         BigInteger e = sign[0];
