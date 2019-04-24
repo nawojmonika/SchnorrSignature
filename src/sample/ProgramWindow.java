@@ -195,6 +195,8 @@ public class ProgramWindow {
         BigInteger s = new BigInteger(this.privateKeyInput.getText());
 
         BigInteger[] signature = algorithm.getSign(message, q, a, p, s);
+        this.signEInput.setText(signature[0].toString());
+        this.signYInput.setText(signature[1].toString());
     }
 
     private void saveToFile(BigInteger[] content){
