@@ -13,9 +13,9 @@ public class ProgramWindow {
     private static BorderPane borderPane = null;
 
     ProgramWindow(Stage mainStage){
-        mainStage.setTitle("DES program");
+        mainStage.setTitle("Schnorr's signature");
         Group root = new Group();
-        Scene scene = new Scene(root, 1200, 250);
+        Scene scene = new Scene(root, 800, 400);
         this.borderPane = new BorderPane();
         this.setupMenu();
         root.getChildren().add(this.borderPane);
@@ -30,7 +30,21 @@ public class ProgramWindow {
         MenuItem receive = new MenuItem("Receive");
 
         message.getItems().addAll(send, receive);
-        menuBar.getMenus().addAll(message);
+
+        Menu file = new Menu("File");
+        MenuItem readMessage = new MenuItem("Read message");
+        MenuItem importConfig = new MenuItem("Import config");
+        MenuItem exportConfig = new MenuItem("Export config");
+        MenuItem readSign = new MenuItem("Read signature");
+
+        file.getItems().addAll(readMessage, importConfig, exportConfig, readSign);
+
+        menuBar.getMenus().addAll(file, message);
         borderPane.setTop(menuBar);
+    }
+
+    private void setupInputs(){
+
+
     }
 }
