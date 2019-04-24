@@ -21,6 +21,7 @@ public class ProgramWindow {
     private static Stage mainStage = null;
     private static BorderPane borderPane = null;
     private static TextField pInput = null;
+    private static Label qLabel = null;
     private static TextField qInput = null;
     private static TextField aInput = null;
     private static Label privateKeyLabel = null;
@@ -84,19 +85,19 @@ public class ProgramWindow {
         GridPane.setHalignment(generateButton, HPos.RIGHT);
         generateButton.setOnAction(event -> this.generateVariables());
 
-        Label pLabel = new Label("p: ");
-        inputsGrid.add(pLabel, 1,2);
-        GridPane.setHalignment(pLabel, HPos.RIGHT);
-
-        this.pInput = new TextField();
-        inputsGrid.add(this.pInput, 2,2);
-
-        Label qLabel = new Label("q: ");
-        inputsGrid.add(qLabel, 3,2);
+        this.qLabel = new Label("q: ");
+        inputsGrid.add(this.qLabel, 1,2);
         GridPane.setHalignment(qLabel, HPos.RIGHT);
 
         this.qInput = new TextField();
-        inputsGrid.add(this.qInput, 4,2);
+        inputsGrid.add(this.qInput, 2,2);
+
+        Label pLabel = new Label("p: ");
+        inputsGrid.add(pLabel, 3,2);
+        GridPane.setHalignment(pLabel, HPos.RIGHT);
+
+        this.pInput = new TextField();
+        inputsGrid.add(this.pInput, 4,2);
 
         Label aLabel = new Label("a: ");
         inputsGrid.add(aLabel, 5,2);
@@ -151,6 +152,8 @@ public class ProgramWindow {
 
     private void setSignMessage(){
         this.actionButton.setText("Sign");
+        this.qInput.setVisible(true);
+        this.qLabel.setVisible(true);
         this.privateKeyLabel.setVisible(true);
         this.privateKeyInput.setVisible(true);
         this.actionButton.setOnAction(event -> this.signMessage());
@@ -158,6 +161,8 @@ public class ProgramWindow {
 
     private void setVerifySignature(){
         this.actionButton.setText("Verify Signature");
+        this.qInput.setVisible(false);
+        this.qLabel.setVisible(false);
         this.privateKeyLabel.setVisible(false);
         this.privateKeyInput.setVisible(false);
         this.actionButton.setOnAction(event -> this.signMessage());
