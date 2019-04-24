@@ -184,7 +184,7 @@ public class ProgramWindow {
         this.qLabel.setVisible(false);
         this.privateKeyLabel.setVisible(false);
         this.privateKeyInput.setVisible(false);
-        this.actionButton.setOnAction(event -> this.signMessage());
+        this.actionButton.setOnAction(event -> this.verifyMessage());
     }
 
     private void signMessage(){
@@ -197,6 +197,19 @@ public class ProgramWindow {
         BigInteger[] signature = algorithm.getSign(message, q, a, p, s);
         this.signEInput.setText(signature[0].toString());
         this.signYInput.setText(signature[1].toString());
+    }
+
+    private void verifyMessage(){
+        String message = this.textarea.getText();
+        BigInteger e = new BigInteger(this.signEInput.getText());
+        BigInteger y = new BigInteger(this.signYInput.getText());
+        BigInteger[] sign = {e, y};
+        BigInteger a = new BigInteger(this.aInput.getText());
+        BigInteger p = new BigInteger(this.pInput.getText());
+        BigInteger v = new BigInteger(this.publicKeyInput.getText());
+
+        Boolean verify = algorithm.verifySign(message, sign, a, p, v);
+        System.out.println(verify);
     }
 
     private void saveToFile(BigInteger[] content){

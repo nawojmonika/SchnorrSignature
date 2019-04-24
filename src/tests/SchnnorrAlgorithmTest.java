@@ -282,7 +282,7 @@ public class SchnnorrAlgorithmTest {
         BigInteger v = keys[1];
 
         BigInteger[] sign = algorithm.getSign(message1, q, a, p, s);
-        boolean verify = algorithm.verifySign(message1, sign, a, p, v);
+        Boolean verify = algorithm.verifySign(message1, sign, a, p, v);
 
         Assert.assertTrue(verify);
     }
