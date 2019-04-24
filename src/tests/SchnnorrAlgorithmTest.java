@@ -15,7 +15,6 @@ public class SchnnorrAlgorithmTest {
     public void getPrimeOfFactorTest(){
         SchnorrAlgorithm algorithm = new SchnorrAlgorithm();
 
-
         BigInteger q1 = BigInteger.valueOf(2);
         BigInteger p1 = algorithm.getPrimeOfFactor(q1, 513 - q1.bitLength());
         Assert.assertTrue(p1.subtract(BigInteger.ONE).remainder(q1).equals(BigInteger.ZERO));

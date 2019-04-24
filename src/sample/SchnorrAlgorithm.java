@@ -8,8 +8,8 @@ public class SchnorrAlgorithm {
 
 
     // Public variables
-    public BigInteger p; // 512-bit prime
-    public BigInteger q; // 140-bit prime & factor of p -1
+    public BigInteger p; // prime
+    public BigInteger q; // prime & factor of p -1
     public BigInteger a; // a != 1 && a^q === 1(modp)
 
     // Keys
@@ -32,8 +32,8 @@ public class SchnorrAlgorithm {
     }
 
     private void generatePublicVariables(){
-        this.q = this.getRandomPrime(140);
-        this.p = this.getPrimeOfFactor(this.q, 373); //512 - 140 + 1
+        this.q = this.getRandomPrime(160);
+        this.p = this.getPrimeOfFactor(this.q, 1024);
         this.a = this.getCoefficient(this.q, this.p);
     }
 
@@ -48,7 +48,7 @@ public class SchnorrAlgorithm {
             Random r = new Random();
             BigInteger k = new BigInteger(bitLength,  r).add(BigInteger.ONE);
             p = (q.multiply(k)).add(BigInteger.ONE);
-        }while (!p.isProbablePrime(9999) && p.bitLength() != 512);
+        }while (!p.isProbablePrime(9999) && p.bitLength() != bitLength);
         return p;
     }
 
