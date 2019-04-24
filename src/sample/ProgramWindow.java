@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 
 
@@ -66,7 +67,10 @@ public class ProgramWindow {
         Menu file = new Menu("File");
         MenuItem readMessage = new MenuItem("Read message");
         MenuItem importConfig = new MenuItem("Import config");
+
         MenuItem exportConfig = new MenuItem("Export config");
+        exportConfig.setOnAction(event -> this.exportConfig());
+
         MenuItem readSign = new MenuItem("Read signature");
 
         file.getItems().addAll(readMessage, importConfig, exportConfig, readSign);
@@ -224,7 +228,17 @@ public class ProgramWindow {
 
     }
 
-    private void saveToFile(BigInteger[] content){
+    private void exportConfig(){
+        String p = this.pInput.getText();
+        String q = this.qInput.getText();
+        String a = this.aInput.getText();
+        String s = this.privateKeyInput.getText();
+        String v = this.publicKeyInput.getText();
+        String[] config = {p,q,a,s,v};
+        this.saveToFile(config);
+    }
+
+    private void saveToFile(String[] content){
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter
@@ -239,8 +253,8 @@ public class ProgramWindow {
                 FileWriter fileWriter = null;
 
                 fileWriter = new FileWriter(file);
-                for(BigInteger element: content){
-                    fileWriter.write(element.toString());
+                for(String element: content){
+                    fileWriter.write(element);
                     fileWriter.write(System.getProperty( "line.separator" ));
                 }
                 fileWriter.close();
