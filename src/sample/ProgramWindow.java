@@ -2,7 +2,6 @@ package sample;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -36,6 +35,7 @@ public class ProgramWindow {
 
     /* Algorithm variables */
     private static SchnorrAlgorithm algorithm = null;
+    private static String fileMessage = null;
 
     ProgramWindow(Stage mainStage) {
         this.mainStage = mainStage;
@@ -130,7 +130,7 @@ public class ProgramWindow {
 
         this.checkBox = new CheckBox("Read message from file");
         inputsGrid.add(this.checkBox, 5, 4, 2, 1);
-        this.checkBox.setOnAction(event -> setMessageFromFile());
+        this.checkBox.setOnAction(event -> getMessageFromFile());
         GridPane.setHalignment(this.checkBox, HPos.RIGHT);
 
         Label message = new Label("Message:");
@@ -163,12 +163,23 @@ public class ProgramWindow {
         inputsGrid.add(actionButton, 6, 8);
         GridPane.setHalignment(this.actionButton, HPos.RIGHT);
 
-//        inputsGrid.setGridLinesVisible(true);
         this.borderPane.setCenter(inputsGrid);
     }
 
-    private void  setMessageFromFile(){
-        System.out.println("Changed!");
+    private void getMessageFromFile() {
+        Boolean checked = this.checkBox.isSelected();
+        this.textarea.setDisable(checked);
+        if (checked) {
+            this.fileMessage = this.readFromFile();
+        }
+    }
+
+    private String getMessage() {
+        Boolean fileMessage = this.checkBox.isSelected();
+        if (fileMessage) {
+            return this.fileMessage;
+        }
+        return this.textarea.getText();
     }
 
     private void generateVariables() {
@@ -207,7 +218,7 @@ public class ProgramWindow {
     }
 
     private void signMessage() {
-        String message = this.textarea.getText();
+        String message = this.getMessage();
         BigInteger q = new BigInteger(this.qInput.getText());
         BigInteger a = new BigInteger(this.aInput.getText());
         BigInteger p = new BigInteger(this.pInput.getText());
@@ -219,7 +230,7 @@ public class ProgramWindow {
     }
 
     private void verifyMessage() {
-        String message = this.textarea.getText();
+        String message = this.getMessage();
         BigInteger e = new BigInteger(this.signEInput.getText());
         BigInteger y = new BigInteger(this.signYInput.getText());
         BigInteger[] sign = {e, y};
@@ -253,7 +264,7 @@ public class ProgramWindow {
     }
 
     private void importConfig() {
-        List<String> config = this.readFromFile();
+        List<String> config = this.readLinesFromFile();
         this.pInput.setText(config.get(0));
         this.qInput.setText(config.get(1));
         this.aInput.setText(config.get(2));
@@ -268,8 +279,8 @@ public class ProgramWindow {
         this.saveToFile(signature);
     }
 
-    private void readSignature(){
-        List<String> signature = this.readFromFile();
+    private void readSignature() {
+        List<String> signature = this.readLinesFromFile();
         this.signEInput.setText(signature.get(0));
         this.signYInput.setText(signature.get(1));
     }
@@ -299,7 +310,7 @@ public class ProgramWindow {
         }
     }
 
-    private List<String> readFromFile() {
+    private List<String> readLinesFromFile() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(this.mainStage);
         List<String> allLines = null;
@@ -312,4 +323,28 @@ public class ProgramWindow {
         }
         return allLines;
     }
+
+    private String readFromFile() {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(this.mainStage);
+        String message = "";
+        if (file != null) {
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(file);
+                DataInputStream dis = new DataInputStream(fis);
+                int bytes[] = new int[dis.available()];
+                int i = 0;
+                while (dis.available() > 0) {
+                    message += (char) dis.readUnsignedByte();
+                    i++;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
 }
