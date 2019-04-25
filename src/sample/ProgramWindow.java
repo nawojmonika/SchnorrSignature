@@ -2,6 +2,7 @@ package sample;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -29,6 +30,7 @@ public class ProgramWindow {
     private static TextField publicKeyInput = null;
     private static TextField signEInput = null;
     private static TextField signYInput = null;
+    private static CheckBox checkBox = null;
     private static TextArea textarea = null;
     private static Button actionButton = null;
 
@@ -126,37 +128,55 @@ public class ProgramWindow {
         this.publicKeyInput = new TextField();
         inputsGrid.add(this.publicKeyInput, 6, 3);
 
+        Label checkBoxLabel = new Label("Read message from file: ");
+        checkBoxLabel.setCursor(Cursor.HAND);
+        inputsGrid.add(checkBoxLabel, 3, 4, 3, 1);
+        GridPane.setHalignment(checkBoxLabel, HPos.RIGHT);
+        checkBoxLabel.setOnMouseClicked(event -> this.toggleCheckbox());
+
+        this.checkBox = new CheckBox();
+        inputsGrid.add(this.checkBox, 6, 4);
+
         Label message = new Label("Message:");
-        inputsGrid.add(message, 2, 4);
+        inputsGrid.add(message, 2, 5);
         GridPane.setHalignment(message, HPos.CENTER);
 
         this.textarea = new TextArea();
         this.textarea.setPrefSize(400, 100);
-        inputsGrid.add(textarea, 3, 4, 4, 1);
+        inputsGrid.add(textarea, 3, 5, 4, 1);
 
         Label signature = new Label("Signature: ");
-        inputsGrid.add(signature, 2, 6);
+        inputsGrid.add(signature, 2, 7);
         GridPane.setHalignment(signature, HPos.CENTER);
 
         Label signELabel = new Label(" e: ");
-        inputsGrid.add(signELabel, 3, 6);
+        inputsGrid.add(signELabel, 3, 7);
         GridPane.setHalignment(signELabel, HPos.RIGHT);
 
         this.signEInput = new TextField();
-        inputsGrid.add(this.signEInput, 4, 6);
+        inputsGrid.add(this.signEInput, 4, 7);
 
         Label signYLabel = new Label(" y: ");
-        inputsGrid.add(signYLabel, 5, 6);
+        inputsGrid.add(signYLabel, 5, 7);
         GridPane.setHalignment(signYLabel, HPos.RIGHT);
 
         this.signYInput = new TextField();
-        inputsGrid.add(this.signYInput, 6, 6);
+        inputsGrid.add(this.signYInput, 6, 7);
 
         this.actionButton = new Button("Sign");
-        inputsGrid.add(actionButton, 6, 7);
+        inputsGrid.add(actionButton, 6, 8);
         GridPane.setHalignment(this.actionButton, HPos.RIGHT);
 
         this.borderPane.setCenter(inputsGrid);
+    }
+
+    private void toggleCheckbox(){
+        Boolean selectValue = this.checkBox.isSelected();
+        this.checkBox.setSelected(!selectValue);
+    }
+
+    private void  setMessageFromFile(){
+
     }
 
     private void generateVariables() {
