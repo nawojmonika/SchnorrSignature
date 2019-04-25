@@ -128,14 +128,10 @@ public class ProgramWindow {
         this.publicKeyInput = new TextField();
         inputsGrid.add(this.publicKeyInput, 6, 3);
 
-        Label checkBoxLabel = new Label("Read message from file: ");
-        checkBoxLabel.setCursor(Cursor.HAND);
-        inputsGrid.add(checkBoxLabel, 3, 4, 3, 1);
-        GridPane.setHalignment(checkBoxLabel, HPos.RIGHT);
-        checkBoxLabel.setOnMouseClicked(event -> this.toggleCheckbox());
-
-        this.checkBox = new CheckBox();
-        inputsGrid.add(this.checkBox, 6, 4);
+        this.checkBox = new CheckBox("Read message from file");
+        inputsGrid.add(this.checkBox, 5, 4, 2, 1);
+        this.checkBox.setOnAction(event -> setMessageFromFile());
+        GridPane.setHalignment(this.checkBox, HPos.RIGHT);
 
         Label message = new Label("Message:");
         inputsGrid.add(message, 2, 5);
@@ -167,16 +163,12 @@ public class ProgramWindow {
         inputsGrid.add(actionButton, 6, 8);
         GridPane.setHalignment(this.actionButton, HPos.RIGHT);
 
+//        inputsGrid.setGridLinesVisible(true);
         this.borderPane.setCenter(inputsGrid);
     }
 
-    private void toggleCheckbox(){
-        Boolean selectValue = this.checkBox.isSelected();
-        this.checkBox.setSelected(!selectValue);
-    }
-
     private void  setMessageFromFile(){
-
+        System.out.println("Changed!");
     }
 
     private void generateVariables() {
