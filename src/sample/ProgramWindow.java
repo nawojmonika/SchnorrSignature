@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 
 
@@ -65,15 +64,18 @@ public class ProgramWindow {
         message.getItems().addAll(send, receive);
 
         Menu file = new Menu("File");
-        MenuItem readMessage = new MenuItem("Read message");
         MenuItem importConfig = new MenuItem("Import config");
+        importConfig.setOnAction(event -> this.importConfig());
 
         MenuItem exportConfig = new MenuItem("Export config");
         exportConfig.setOnAction(event -> this.exportConfig());
 
+        MenuItem saveSign = new MenuItem("Save signature");
+        saveSign.setOnAction(event -> this.saveSignature());
+
         MenuItem readSign = new MenuItem("Read signature");
 
-        file.getItems().addAll(readMessage, importConfig, exportConfig, readSign);
+        file.getItems().addAll(importConfig, exportConfig, saveSign, readSign);
 
         menuBar.getMenus().addAll(file, message);
         this.borderPane.setTop(menuBar);
@@ -236,6 +238,17 @@ public class ProgramWindow {
         String v = this.publicKeyInput.getText();
         String[] config = {p,q,a,s,v};
         this.saveToFile(config);
+    }
+
+    private void importConfig(){
+
+    }
+
+    private void saveSignature(){
+        String e = this.signEInput.getText();
+        String y = this.signYInput.getText();
+        String[] signature = {e, y};
+        this.saveToFile(signature);
     }
 
     private void saveToFile(String[] content){
