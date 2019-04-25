@@ -74,6 +74,7 @@ public class ProgramWindow {
         saveSign.setOnAction(event -> this.saveSignature());
 
         MenuItem readSign = new MenuItem("Read signature");
+        readSign.setOnAction(event -> this.readSignature());
 
         file.getItems().addAll(importConfig, exportConfig, saveSign, readSign);
 
@@ -221,7 +222,7 @@ public class ProgramWindow {
     private void showMessage(Boolean verified) {
         Alert alert;
         if (verified) {
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Signature is correct");
+            alert = new Alert(Alert.AlertType.INFORMATION, "Signature is correct");
         } else {
             alert = new Alert(Alert.AlertType.ERROR, "Signature is not correct");
         }
@@ -253,6 +254,12 @@ public class ProgramWindow {
         String y = this.signYInput.getText();
         String[] signature = {e, y};
         this.saveToFile(signature);
+    }
+
+    private void readSignature(){
+        List<String> signature = this.readFromFile();
+        this.signEInput.setText(signature.get(0));
+        this.signYInput.setText(signature.get(1));
     }
 
     private void saveToFile(String[] content) {
