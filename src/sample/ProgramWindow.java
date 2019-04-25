@@ -10,10 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.util.List;
 
 
 public class ProgramWindow {
@@ -35,7 +35,7 @@ public class ProgramWindow {
     /* Algorithm variables */
     private static SchnorrAlgorithm algorithm = null;
 
-    ProgramWindow(Stage mainStage){
+    ProgramWindow(Stage mainStage) {
         this.mainStage = mainStage;
         this.mainStage.setTitle("Schnorr's signature");
         Group root = new Group();
@@ -51,7 +51,7 @@ public class ProgramWindow {
         this.setSignMessage();
     }
 
-    private void setupMenu(){
+    private void setupMenu() {
         MenuBar menuBar = new MenuBar();
         Menu message = new Menu("Message");
 
@@ -81,37 +81,37 @@ public class ProgramWindow {
         this.borderPane.setTop(menuBar);
     }
 
-    private void setupInputs(){
+    private void setupInputs() {
         GridPane inputsGrid = new GridPane();
         inputsGrid.setPrefSize(800, 400);
         inputsGrid.setVgap(10);
-        inputsGrid.setPadding(new  Insets(20));
+        inputsGrid.setPadding(new Insets(20));
 
         Button generateButton = new Button("Generate values");
-        inputsGrid.add(generateButton,6,1);
+        inputsGrid.add(generateButton, 6, 1);
         GridPane.setHalignment(generateButton, HPos.RIGHT);
         generateButton.setOnAction(event -> this.generateVariables());
 
         this.qLabel = new Label("q: ");
-        inputsGrid.add(this.qLabel, 1,2);
+        inputsGrid.add(this.qLabel, 1, 2);
         GridPane.setHalignment(qLabel, HPos.RIGHT);
 
         this.qInput = new TextField();
-        inputsGrid.add(this.qInput, 2,2);
+        inputsGrid.add(this.qInput, 2, 2);
 
         Label pLabel = new Label("p: ");
-        inputsGrid.add(pLabel, 3,2);
+        inputsGrid.add(pLabel, 3, 2);
         GridPane.setHalignment(pLabel, HPos.RIGHT);
 
         this.pInput = new TextField();
-        inputsGrid.add(this.pInput, 4,2);
+        inputsGrid.add(this.pInput, 4, 2);
 
         Label aLabel = new Label("a: ");
-        inputsGrid.add(aLabel, 5,2);
+        inputsGrid.add(aLabel, 5, 2);
         GridPane.setHalignment(aLabel, HPos.RIGHT);
 
         this.aInput = new TextField();
-        inputsGrid.add(this.aInput, 6,2);
+        inputsGrid.add(this.aInput, 6, 2);
 
         this.privateKeyLabel = new Label(" Private key: ");
         inputsGrid.add(this.privateKeyLabel, 3, 3);
@@ -131,25 +131,25 @@ public class ProgramWindow {
 
         this.textarea = new TextArea();
         this.textarea.setPrefSize(400, 100);
-        inputsGrid.add(textarea,3, 4, 4, 1);
+        inputsGrid.add(textarea, 3, 4, 4, 1);
 
         Label signature = new Label("Signature: ");
-        inputsGrid.add(signature, 2,6);
+        inputsGrid.add(signature, 2, 6);
         GridPane.setHalignment(signature, HPos.CENTER);
 
         Label signELabel = new Label(" e: ");
-        inputsGrid.add(signELabel, 3,6);
+        inputsGrid.add(signELabel, 3, 6);
         GridPane.setHalignment(signELabel, HPos.RIGHT);
 
         this.signEInput = new TextField();
-        inputsGrid.add(this.signEInput,4,6);
+        inputsGrid.add(this.signEInput, 4, 6);
 
         Label signYLabel = new Label(" y: ");
-        inputsGrid.add(signYLabel, 5,6);
+        inputsGrid.add(signYLabel, 5, 6);
         GridPane.setHalignment(signYLabel, HPos.RIGHT);
 
         this.signYInput = new TextField();
-        inputsGrid.add(this.signYInput,6,6);
+        inputsGrid.add(this.signYInput, 6, 6);
 
         this.actionButton = new Button("Sign");
         inputsGrid.add(actionButton, 6, 7);
@@ -158,7 +158,7 @@ public class ProgramWindow {
         this.borderPane.setCenter(inputsGrid);
     }
 
-    private void generateVariables(){
+    private void generateVariables() {
         this.algorithm.init();
         BigInteger[] constraints = this.algorithm.getConstrains();
         BigInteger[] keys = this.algorithm.getKeys();
@@ -175,7 +175,7 @@ public class ProgramWindow {
         this.publicKeyInput.setText(v.toString());
     }
 
-    private void setSignMessage(){
+    private void setSignMessage() {
         this.actionButton.setText("Sign");
         this.qInput.setVisible(true);
         this.qLabel.setVisible(true);
@@ -184,7 +184,7 @@ public class ProgramWindow {
         this.actionButton.setOnAction(event -> this.signMessage());
     }
 
-    private void setVerifySignature(){
+    private void setVerifySignature() {
         this.actionButton.setText("Verify Signature");
         this.qInput.setVisible(false);
         this.qLabel.setVisible(false);
@@ -193,7 +193,7 @@ public class ProgramWindow {
         this.actionButton.setOnAction(event -> this.verifyMessage());
     }
 
-    private void signMessage(){
+    private void signMessage() {
         String message = this.textarea.getText();
         BigInteger q = new BigInteger(this.qInput.getText());
         BigInteger a = new BigInteger(this.aInput.getText());
@@ -205,7 +205,7 @@ public class ProgramWindow {
         this.signYInput.setText(signature[1].toString());
     }
 
-    private void verifyMessage(){
+    private void verifyMessage() {
         String message = this.textarea.getText();
         BigInteger e = new BigInteger(this.signEInput.getText());
         BigInteger y = new BigInteger(this.signYInput.getText());
@@ -218,40 +218,44 @@ public class ProgramWindow {
         this.showMessage(verify);
     }
 
-    private void showMessage(Boolean verified){
+    private void showMessage(Boolean verified) {
         Alert alert;
-        if(verified){
+        if (verified) {
             alert = new Alert(Alert.AlertType.CONFIRMATION, "Signature is correct");
-        }
-        else {
+        } else {
             alert = new Alert(Alert.AlertType.ERROR, "Signature is not correct");
         }
         alert.show();
 
     }
 
-    private void exportConfig(){
+    private void exportConfig() {
         String p = this.pInput.getText();
         String q = this.qInput.getText();
         String a = this.aInput.getText();
         String s = this.privateKeyInput.getText();
         String v = this.publicKeyInput.getText();
-        String[] config = {p,q,a,s,v};
+        String[] config = {p, q, a, s, v};
         this.saveToFile(config);
     }
 
-    private void importConfig(){
-
+    private void importConfig() {
+        List<String> config = this.readFromFile();
+        this.pInput.setText(config.get(0));
+        this.qInput.setText(config.get(1));
+        this.aInput.setText(config.get(2));
+        this.privateKeyInput.setText(config.get(3));
+        this.publicKeyInput.setText(config.get(4));
     }
 
-    private void saveSignature(){
+    private void saveSignature() {
         String e = this.signEInput.getText();
         String y = this.signYInput.getText();
         String[] signature = {e, y};
         this.saveToFile(signature);
     }
 
-    private void saveToFile(String[] content){
+    private void saveToFile(String[] content) {
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter
@@ -259,20 +263,34 @@ public class ProgramWindow {
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog
-        File file = fileChooser.showSaveDialog(mainStage);
+        File file = fileChooser.showSaveDialog(this.mainStage);
 
-        if(file != null){
+        if (file != null) {
             try {
                 FileWriter fileWriter = null;
 
                 fileWriter = new FileWriter(file);
-                for(String element: content){
+                for (String element : content) {
                     fileWriter.write(element);
-                    fileWriter.write(System.getProperty( "line.separator" ));
+                    fileWriter.write(System.getProperty("line.separator"));
                 }
                 fileWriter.close();
             } catch (IOException ex) {
             }
         }
+    }
+
+    private List<String> readFromFile() {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(this.mainStage);
+        List<String> allLines = null;
+        if (file != null) {
+            try {
+                allLines = Files.readAllLines(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return allLines;
     }
 }
